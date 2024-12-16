@@ -11,7 +11,6 @@ const checkEmailAndPhone = async (req, res, next) => {
         message: "Email is required.",
       });
     }
-
     // Check if phone is provided
     if (!phone) {
       return res.status(400).json({
@@ -19,7 +18,7 @@ const checkEmailAndPhone = async (req, res, next) => {
         message: "Phone number is required.",
       });
     }
-
+    
     // Check if email exists in the database
     const emailExists = await User.findOne({ email });
     if (emailExists) {

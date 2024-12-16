@@ -2,6 +2,7 @@ const { permissionService } = require("../service");
 
 
 const getPermission = async (req, res) => {
+  
     try {
       const permissions = await permissionService.getPermission();
       res.json({ success: true, permissions: permissions });

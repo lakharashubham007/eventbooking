@@ -15,13 +15,11 @@ const roleSchema = new mongoose.Schema(
       maxlength: 255,
       required: true,
     },
-    sidebarMenus: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "SidebarMenus",
-        required: true,
-      },
-    ],
+    sidebarMenus: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "SideBarMenu",
+      required: true
+  }],
     deleted: { type: Boolean, default: false },
     permissions: [
       {

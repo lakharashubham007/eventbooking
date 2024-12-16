@@ -5,7 +5,6 @@ const getUserSidebarMenus = async (userId) => {
   try {
     const user = await User.findById(userId).populate('role');
     const sidebarMenus = await SidebarMenu.find({ _id: { $in: user.role.sidebarMenus } });
-    // console.log("sidebarMenus====================================>",sidebarMenus)
     return sidebarMenus;
   } catch (error) {
     console.error('Error getting user sidebar menus:', error);

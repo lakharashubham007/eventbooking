@@ -2,7 +2,6 @@ const { User } = require('../models');
 const { sidebarMenuService } = require('../service');
 
 const getSidebarMenus = async (req, res) => {
-  console.log(req,"=================")
   try {
     const userId = req.user.sub;
     const sidebarMenus = await sidebarMenuService.getUserSidebarMenus(userId);

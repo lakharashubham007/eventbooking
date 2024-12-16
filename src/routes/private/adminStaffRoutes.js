@@ -14,7 +14,7 @@ const upload = require("../../middlewares/multer");
 const router = express.Router();
 
 // CRUD routes for admin staff
-router.post("/create-admin-staff", checkEmailAndPhone);
+router.post("/create-admin-staff", checkEmailAndPhone,upload.single("profile_picture"),);
 router.get("/view-admin-staff", getAllAdminStaff);
 router.get("/view-admin-staff/:id", getAdminStaffById);
 router.put("/admin-staff/:id", updateAdminStaff);

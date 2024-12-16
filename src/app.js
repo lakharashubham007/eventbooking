@@ -23,14 +23,6 @@ main.options("*", cors());
 // main.use("/v1/api", public_routes);
 main.use("/v1/auth", private_routes);
 
-// Dummy route for testing
-main.get("/test", (req, res) => {
-  res.status(200).json({
-    success: true,
-    message: "This is a dummy test route!",
-  });
-});
-
 main.use((err, req, res, next) => {
   if (err instanceof ApiError) {
     // If the error is an instance of ApiError, send a custom error response

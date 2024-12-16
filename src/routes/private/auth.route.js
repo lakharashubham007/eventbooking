@@ -5,12 +5,14 @@ const validate = require('../../middlewares/validate')
 const authValidation = require("../../validation/auth.validation");
 const authController = require("../../controllers/auth.controller.js");
 const upload = require("../../middlewares/multer.js");
+const { checkEmailAndPhone } = require("../../middlewares/index.js");
 
 
 
 
 router.post(
     "/register",
+    checkEmailAndPhone,
     upload.single("profile_picture"), 
     validate(authValidation.register),
     authController.register
