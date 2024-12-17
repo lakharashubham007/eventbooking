@@ -16,12 +16,6 @@ const createUser = async (userBody) => {
   }
 };
 
-/**
- * Get user by email
- * - Fetch user object from Mongo using the "email" field and return user object
- * @param {string} email
- * @returns {Promise<User>}
- */
 const getUserByEmail = async (email) => {
   return await User.findOne({ email: email });
 };

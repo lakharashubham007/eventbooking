@@ -1,127 +1,107 @@
-const {AdminStaff, User} = require("../models");
-const bcrypt = require("bcryptjs");
+const adminStaffService = require("../service/adminStaff.service");
 
-/**
- * Create a new admin staff
- */
-
+// Create admin staff
 const createAdminStaff = async (req, res) => {
-  console.log(req.file, "---------------createAdminStaff---------------");
-  if(!req.file){
-    res.status(400).send({ message: "Profile Picture is required" });
-  }
+  console.log(req.files, "---------------req.files---------------");
   try {
-    const { firstname, lastname, email, phone, password, username } = req.body;
+    const requiredFiles = ["profile_picture", "aadhar_front", "aadhar_back", "pan_front", "pan_back"];
+    const missingFiles = requiredFiles.filter((file) => !req.files[file]);
 
-    // Check if the user already exists
-    const isUserAlreadyExist = await User.findOne({
-      $or:[{email},{phone}]
-    });
-    if (isUserAlreadyExist) {
-      return res.status(400).json({ message: "A user with this email already exists." });
+    if (missingFiles.length > 0) {
+      return res.status(400).json({
+        message: "Validation Error: Missing required files.",
+        missingFiles: missingFiles.map((file) => `${file} is required`),
+      });
     }
 
-    
+    const data = {
+      ...req.body,
+      role: "675abe36c43c6973f28d34bd", 
+      profile_picture: req.files["profile_picture"][0].filename,
+      aadhar_front: req.files["aadhar_front"][0].filename,
+      aadhar_back: req.files["aadhar_back"][0].filename,
+      pan_front: req.files["pan_front"][0].filename,
+      pan_back: req.files["pan_back"][0].filename,
+    };
 
-    // Create a new admin staff user
-    const newAdminStaff = new User({
-      username,
-      firstname,
-      lastname,
-      email,
-      phone,
-      role: "675abe36c43c6973f28d34bd", // Role ID for admin staff
-      password,
-      profile_picture,
-    });
-
-    // Save the new user
-    await newAdminStaff.save();
-
-    return res.status(201).json({ 
-      message: "Admin staff created successfully.", 
-      adminStaff: {
-        id: newAdminStaff._id,
-        firstname: newAdminStaff.firstname,
-        lastname: newAdminStaff.lastname,
-        email: newAdminStaff.email,
-        phone: newAdminStaff.phone,
-        role: newAdminStaff.role,
-        profile_picture: newAdminStaff.profile_picture,
-      }
+    const isExist = await adminStaffService.createAdminStaff(data);
+    return res.status(201).json({
+      message: "Admin staff created successfully.",
+      data: isExist,
     });
   } catch (error) {
-    console.error("Error creating admin staff:", error);
-    return res.status(500).json({ 
-      message: "Error creating admin staff.", 
-      error: error.message || error 
-    });
+    console.error(error,"------------------");
+    return res.status(500).json({ message: "Internal server error" });
   }
 };
-/**
- * Get all admin staff
- */
+
+// Get all admin staff
 const getAllAdminStaff = async (req, res) => {
   try {
-    const adminStaffList = await AdminStaff.find().populate("adminId role");
+    const adminStaffList = await adminStaffService.getAllAdminStaff();
     return res.status(200).json(adminStaffList);
   } catch (error) {
-    return res.status(400).json({ message: "Error fetching admin staff.", error });
+    return res.status(500).json({ message: "Failed to fetch admin staff." });
   }
 };
 
-/**
- * Get a specific admin staff by ID
- */
+// Get admin staff by ID
 const getAdminStaffById = async (req, res) => {
+  console.log(req.params.id, "---------------req.params.id---------------");
+  if(!req?.params?.id){
+    return res.status(404).json({ message: "id is missing" });
+  }
   try {
-    const { id } = req.params;
-    const adminStaff = await AdminStaff.findById(id).populate("adminId role");
-
-    if (!adminStaff) return res.status(404).json({ message: "Admin staff not found." });
-
+    const adminStaff = await adminStaffService.getAdminStaffById(req.params.id);
+    if (!adminStaff) {
+      return res.status(404).json({ message: "Admin staff not found." });
+    }
     return res.status(200).json(adminStaff);
   } catch (error) {
-    return res.status(400).json({ message: "Error fetching admin staff.", error });
+    return res.status(500).json({ message: "Error fetching admin staff." });
   }
 };
 
-/**
- * Update an admin staff by ID
- */
+// Update admin staff
 const updateAdminStaff = async (req, res) => {
   try {
-    const { id } = req.params;
-    const updates = req.body;
-
-    // Hash the password if it's being updated
-    if (updates.password) {
-      updates.password = await bcrypt.hash(updates.password, 10);
+    const updatedData = req.body;
+    if (req.file) {
+      updatedData.profile_picture = req.file.fieldname;
     }
 
-    const updatedAdminStaff = await AdminStaff.findByIdAndUpdate(id, updates, { new: true });
+    const updatedAdminStaff = await adminStaffService.updateAdminStaff(
+      req.params.id,
+      updatedData
+    );
 
-    if (!updatedAdminStaff) return res.status(404).json({ message: "Admin staff not found." });
+    if (!updatedAdminStaff) {
+      return res.status(404).json({ message: "Admin staff not found." });
+    }
 
-    return res.status(200).json({ message: "Admin staff updated successfully.", adminStaff: updatedAdminStaff });
+    return res.status(200).json({
+      message: "Admin staff updated successfully.",
+      data: updatedAdminStaff,
+    });
   } catch (error) {
-    return res.status(400).json({ message: "Error updating admin staff.", error });
+    return res.status(500).json({ message: "Failed to update admin staff." });
   }
 };
 
-/**
- * Delete an admin staff by ID
- */
+// Delete admin staff
 const deleteAdminStaff = async (req, res) => {
   try {
-    const { id } = req.params;
+    const deletedAdminStaff = await adminStaffService.deleteAdminStaff(req.params.id);
 
-    const deletedAdminStaff = await AdminStaff.findByIdAndDelete(id);
-    if (!deletedAdminStaff) return res.status(404).json({ message: "Admin staff not found." });
+    if (!deletedAdminStaff) {
+      return res.status(404).json({ message: "Admin staff not found." });
+    }
 
-    return res.status(200).json({ message: "Admin staff deleted successfully." });
+    return res.status(200).json({
+      message: "Admin staff deleted successfully.",
+    });
   } catch (error) {
-    return res.status(400).json({ message: "Error deleting admin staff.", error });
+    return res.status(500).json({ message: "Error deleting admin staff." });
   }
 };
 

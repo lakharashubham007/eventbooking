@@ -42,38 +42,40 @@ const userSchema = new mongoose.Schema(
     phone: {
       type: Number,
       unique: true,
-      require:true,
+      required:true,
       
     },
     address: {
       type: String,
       trim: true,
-      require:true
+      required:true
     },
     city: {
       type: String,
       trim: true,
-      require:true
+      required:true
     },
     state: {
       type: String,
       trim: true,
-      require:true
+      required:true
     },
     zipcode: {
       type: Number,
       trim: true,
-      require:true
+      required:true
     },
     
     firebasetoken: String,
     remembertoken: String,
    
-    profile_picture: {
-      type: String,
-      trim: true,
-      require:true
-    },
+    profile_picture: { type: String, required: true },
+    aadhar_front: { type: String, required: true },
+    aadhar_back: { type: String, required: true },
+    aadhar_number: { type: String, required: true },
+    pan_front: { type: String, required: true },
+    pan_back: { type: String, required: true },
+    pan_number: { type: String, required: true },
     
     is_active: {
       type: Boolean,

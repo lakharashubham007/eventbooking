@@ -12,14 +12,17 @@ const register = {
     role: Joi.string(), // Assuming role is a string for simplicity
     password: Joi.string().required().custom(password).min(8),
     email: Joi.string().required().email().trim(),
-    phone: Joi.string().pattern(/^\+(?:[0-9] ?){6,14}[0-9]$/).trim(),
-    profile_picture: Joi.any().optional(), 
+    phone: Joi.string()
+      .pattern(/^\+?(?:[0-9] ?){6,14}[0-9]$/)
+      .trim(),
+    profile_picture: Joi.any().optional(),
     address: Joi.string().required().max(200),
-    city:Joi.string().required().max(30),
-    state:Joi.string().required().max(30),
-    zipcode:Joi.string().required().max(7),
+    city: Joi.string().required().max(30),
+    state: Joi.string().required().max(30),
+    zipcode: Joi.string().required().max(7),
+    pan_number: Joi.string().required().max(10).uppercase(),
+    aadhar_number: Joi.number().required().min(12),
   }),
- 
 };
 
 /**
