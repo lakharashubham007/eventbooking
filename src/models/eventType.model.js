@@ -1,3 +1,4 @@
+
 const mongoose = require("mongoose");
 
 const eventTypeSchema = new mongoose.Schema(
@@ -13,6 +14,7 @@ const eventTypeSchema = new mongoose.Schema(
       type: String, // Optional description for the event type
       trim: true,
       maxlength: 200,
+      required:true
     },
     is_active: {
       type: Boolean,

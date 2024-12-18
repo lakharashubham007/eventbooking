@@ -6,3 +6,4 @@ module.exports.userService = require("./user.service");
 module.exports.sidebarMenuService = require("./sidebarMenu.service");
 module.exports.permissionService = require("./permission.service");
 module.exports.adnminStaffService = require("./adminStaff.service");
+module.exports.eventService = require("./eventService.service.js");

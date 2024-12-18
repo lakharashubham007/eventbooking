@@ -1,73 +1,63 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
-const eventSchema = new mongoose.Schema(
-  {
-    agencyId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Agency",
-      required: true,
-    },
-    name: {
-      type: String,
-      required: true,
-      trim: true,
-      maxlength: 100,
-    },
-    description: {
-      type: String,
-      trim: true,
-    },
-    location: {
-      type: String,
-      trim: true,
-    },
-    startDate: {
-      type: Date,
-      required: true,
-    },
-    endDate: {
-      type: Date,
-      required: true,
-    },
-    status: {
-      type: String,
-      enum: ["Draft", "Under Review", "Approved", "Rejected", "Completed", "Cancelled"],
-      default: "Draft",
-    },
-    ticketTypes: [
-      {
-        name: { type: String, required: true, trim: true },
-        price: { type: Number, required: true },
-        availableQuantity: { type: Number, required: true },
-      },
-    ],
-    media: [
-      {
-        type: String,
-        trim: true,
-      },
-    ],
-    schedule: [
-      {
-        time: { type: String, trim: true },
-        description: { type: String, trim: true },
-      },
-    ],
-    speakers: [
-      {
-        name: { type: String, trim: true },
-        photo: { type: String, trim: true },
-        designation: { type: String, trim: true },
-      },
-    ],
-    customDomain: {
-      type: String,
-      trim: true,
-    },
-  },
-  { timestamps: true }
-);
+// Event Schema
 
-const Event = mongoose.model("Event", eventSchema);
+const eventSchema = new mongoose.Schema({
+  event_title: { type: String, default: null },
+  event_type: { type: mongoose.Schema.Types.ObjectId, ref: 'EventType', default: null },
+  user_id: { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null },
+  logo: { type: String, default: null },
+  banner: { type: String, default: null },
+  start_date: { type: Date, default: null },
+  end_date: { type: Date, default: null },
+  website_link: { type: String, default: null },
+  facebook: { type: String, default: null },
+  linkedin: { type: String, default: null },
+  instagram: { type: String, default: null },
+  twitter: { type: String, default: null },
+  youtube: { type: String, default: null },
+  about_event: { type: String, default: null },
+  why_to_support_event: { type: String, default: null },
+  brand_versatile: { type: String, default: null },
+  start_time: { type: String, default: null },
+  contact_number: { type: String, default: null },
+  email: { type: String, default: null },
+  country_code: { type: Number, default: null },
+  is_active: { type: Boolean, default: false },
+  description: { type: String, default: null },
+  end_time: { type: String, default: null },
+  latitude: { type: Number, default: null },
+  longitude: { type: Number, default: null },
+  address: { type: String, default: null },
+  pin_code: { type: String, default: null },
+  country: { type: String, default: null },
+  country_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Country', default: null },
+  state: { type: String, default: null },
+  state_id: { type: mongoose.Schema.Types.ObjectId, ref: 'State', default: null },
+  city: { type: String, default: null },
+  city_id: { type: mongoose.Schema.Types.ObjectId, ref: 'City', default: null },
+  event_status: { type: String, default: 'Draft' },
+  published: { type: Boolean, default: false },
+  unpublished: { type: Boolean, default: true },
+  published_date: { type: Date, default: null },
+  published_end_date: { type: Date, default: null },
+  published_start_time: { type: String, default: null },
+  published_end_time: { type: String, default: null },
+  status: { type: String, default: null },
+  event_mode: { type: String, default: null },
+  event_time_category: { type: String, default: null },
+  views: { type: Number, default: 0 },
+  no_of_participants: { type: Number, default: null },
+  created_at: { type: Date, default: Date.now },
+  updated_at: { type: Date, default: Date.now },
+  address_type: { type: String, default: null },
+  landmark: { type: String, default: null },
+  archive: { type: Boolean, default: false },
+  
+});
 
-module.exports.Event = Event;
+
+
+const Event= mongoose.model('Event', eventSchema);
+
+module.exports = Event;

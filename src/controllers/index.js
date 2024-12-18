@@ -9,3 +9,7 @@ module.exports.getAdminStaffById = require("./adminStaff.controller").getAdminSt
 module.exports.updateAdminStaff = require("./adminStaff.controller").updateAdminStaff;
 module.exports.getAllAdminStaff = require("./adminStaff.controller").getAllAdminStaff;
 module.exports.permissionController = require('./permission.controller.js');
+
+//Events
+module.exports.eventController = require('./events.controller');
+module.exports.eventTypeController = require('./eventType.controller');

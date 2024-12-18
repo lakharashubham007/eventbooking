@@ -20,7 +20,7 @@ main.use(express.urlencoded({ extended: true }));
 main.use(cors());
 main.options("*", cors());
 
-// main.use("/v1/api", public_routes);
+main.use("/v1/api", public_routes);
 main.use("/v1/auth", private_routes);
 
 main.use((err, req, res, next) => {

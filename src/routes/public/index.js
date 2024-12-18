@@ -2,7 +2,7 @@ const express = require("express");
 
 // const imageRoute = require('./images.route');
 // const publicAuth = require('./publicAuth.route')
-// const hotelRoute = require('./hotel.route')
+const eventRoute = require('./event.route')
 // const roomRoute = require('./room.route')
 // const commonRoute = require('./common.route')
 
@@ -12,7 +12,7 @@ const router = express.Router();
 
 // router.use("/get-Images", imageRoute);
 // router.use("/auth-customer",  publicAuth);
-// router.use("/hotels/",hotelRoute),
+router.use("/event",eventRoute),
 // router.use("/room", roomRoute),
 // router.use("/public", commonRoute)
 

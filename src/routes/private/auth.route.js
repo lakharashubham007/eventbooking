@@ -12,8 +12,8 @@ const { checkEmailAndPhone } = require("../../middlewares/index.js");
 
 router.post(
     "/register",
-    checkEmailAndPhone,
     upload.single("profile_picture"), 
+    checkEmailAndPhone,
     validate(authValidation.register),
     authController.register
   );

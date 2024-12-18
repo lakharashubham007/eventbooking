@@ -6,7 +6,7 @@ const authorization = async (req, res, next) => {
         // Step 1 - Check if role has permissions
         const user = await models.User.findById(req.user.sub);
         const role = await models.Role.findById(user.role._id)?.populate('permissions');
-        
+        console.log(user, "---------------user---------------");
         if (!role.permissions || role.permissions.length === 0) {
             return res.send.status(401).json({
                 success: false,
