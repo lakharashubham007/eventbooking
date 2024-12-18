@@ -51,12 +51,17 @@ const userSchema = new mongoose.Schema(
       required:true
     },
     city: {
-      type: String,
+      type: Number,
+      trim: true,
+      required:true
+    },
+    country: {
+      type: Number,
       trim: true,
       required:true
     },
     state: {
-      type: String,
+      type: Number,
       trim: true,
       required:true
     },
@@ -74,7 +79,6 @@ const userSchema = new mongoose.Schema(
     aadhar_back: { type: String, required: true },
     aadhar_number: { type: String, required: true },
     pan_front: { type: String, required: true },
-    pan_back: { type: String, required: true },
     pan_number: { type: String, required: true },
     
     is_active: {

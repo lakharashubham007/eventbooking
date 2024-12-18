@@ -47,7 +47,6 @@ const uploadMiddleware = upload.fields([
   { name: "aadhar_front", maxCount: 1 },
   { name: "aadhar_back", maxCount: 1 },
   { name: "pan_front", maxCount: 1 },
-  { name: "pan_back", maxCount: 1 },
 ]);
 
 router.post(

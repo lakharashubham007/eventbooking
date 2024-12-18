@@ -2,9 +2,9 @@ const adminStaffService = require("../service/adminStaff.service");
 
 // Create admin staff
 const createAdminStaff = async (req, res) => {
-  console.log(req.files, "---------------req.files---------------");
+  console.log(req, "---------------req.files---------------",req.body.firstname+req.body.lastname);
   try {
-    const requiredFiles = ["profile_picture", "aadhar_front", "aadhar_back", "pan_front", "pan_back"];
+    const requiredFiles = ["profile_picture", "aadhar_front", "aadhar_back", "pan_front"];
     const missingFiles = requiredFiles.filter((file) => !req.files[file]);
 
     if (missingFiles.length > 0) {
@@ -16,12 +16,12 @@ const createAdminStaff = async (req, res) => {
 
     const data = {
       ...req.body,
+      username:req.body.firstname+" "+req.body.lastname,
       role: "675abe36c43c6973f28d34bd", 
       profile_picture: req.files["profile_picture"][0].filename,
       aadhar_front: req.files["aadhar_front"][0].filename,
       aadhar_back: req.files["aadhar_back"][0].filename,
       pan_front: req.files["pan_front"][0].filename,
-      pan_back: req.files["pan_back"][0].filename,
     };
 
     const isExist = await adminStaffService.createAdminStaff(data);
