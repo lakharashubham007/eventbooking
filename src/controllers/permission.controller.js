@@ -22,7 +22,9 @@ const createPermission = async (req, res) => {
 
     try {
       const permissions = await permissionService.createPermission(req.body);
+      console.log(permissions, "---------------permissions---------------");
       res.json({ success: true, permissions: permissions });
+
     } catch (error) {
       if (error.name === 'ValidationError') {
         const validationErrors = Object.keys(error.errors).map(key => error.errors[key].message);

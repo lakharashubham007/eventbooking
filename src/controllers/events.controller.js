@@ -4,6 +4,7 @@ const { eventService } = require("../service");
 
 
 const getEvents = async (req, res) => {
+  console.log(req.body, "---------------req---------------");
   try {
     const getHotels = await eventService.getEvents();
     res.json({ success: true, hotels: getHotels });
@@ -15,24 +16,26 @@ const getEvents = async (req, res) => {
 
 const addBasicInfo = catchAsync(async (req, res) => {
   const { created, addbasicInfo } = await eventService.addBasicInfo(req.body);
+  console.log(addbasicInfo, "---------------addBasicInfo---------------");
   if (created) {
-    res.status(httpStatus.CREATED).send({ basicInfo: addbasicInfo, message: "Basic Information Saved Successfully!" });
+    res.status(201).send({ data: addbasicInfo, message: "Basic Information Saved Successfully!" });
   } else {
-    res.status(httpStatus.OK).send({ basicInfo: addbasicInfo, message: "Existing Hotel Details!" });
+    res.status(200).send({ data: addbasicInfo, message: "Existing Hotel Details!",success:true });
   }
 });
 
 
 const addPackageInfo = catchAsync(async (req, res) => {
   const { eventId } = req.params;
-  const locationInfo = req.body;
-  console.log(locationInfo)
+  const peckages = req.body;
+  // console.log(peckages)
   try {
-    const { hotel, statusCode } = await eventService.addPeckageInfo(eventId, locationInfo);
-    res.status(statusCode).json({
+    const { created, event } = await eventService.addPeckageInfo(eventId, peckages);
+    console.log(event, "---------------peckage---------------");
+    res.status(200).json({
       success: true,
-      hotel: hotel,
-      message: `Location Info ${statusCode === 200 ? 'Saved' : 'Already Up to Date'} Successfully!`,
+      data: event,
+      message: `Peckege Updated Successfully!`,
     });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });

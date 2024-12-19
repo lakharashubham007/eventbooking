@@ -1,12 +1,12 @@
 
 const express = require("express");
 const {
-  createAdminStaff,
-  getAllAdminStaff,
-  getAdminStaffById,
-  updateAdminStaff,
-  deleteAdminStaff,
-} = require("../../controllers/adminStaff.controller");
+  createAgencyStaff,
+  getAllAgencyStaff,
+  getAgencyStaffById,
+  updateAgencyStaff,
+  deleteAgencyStaff,
+} = require("../../controllers/agencyStaff.controller.js");
 const authValidation = require("../../validation/auth.validation");
 const {
   Authentication,
@@ -14,7 +14,6 @@ const {
   checkEmailAndPhone,
 } = require("../../middlewares");
 const upload = require("../../middlewares/multer");
-const { authService } = require("../../service");
 const validate = require("../../middlewares/validate");
 
 const router = express.Router();
@@ -27,34 +26,34 @@ const uploadMiddleware = upload.fields([
 ]);
 
 router.post(
-  "/create-admin-staff",
+  "/create-agency-staff",
   Authentication,
   Authorization,
   uploadMiddleware,
   checkEmailAndPhone,
   validate(authValidation.register),
-  createAdminStaff
+  createAgencyStaff
 );
 
-router.get("/get-admin-staff", Authentication, Authorization, getAllAdminStaff);
+router.get("/get-agency-staff", Authentication, Authorization, getAllAgencyStaff);
 router.get(
-  "/get-admin-staff/:id",
+  "/get-agency-staff/:id",
   Authentication,
   Authorization,
-  getAdminStaffById
+  getAgencyStaffById
 );
 router.patch(
-  "/update-admin-staff/:id",
+  "/update-agency-staff/:id",
   Authentication,
   Authorization,
   uploadMiddleware,
-  updateAdminStaff
+  updateAgencyStaff
 );
 router.delete(
-  "/delete-admin-staff/:id",
+  "/delete-agency-staff/:id",
   Authentication,
   Authorization,
-  deleteAdminStaff
+  deleteAgencyStaff
 );
 
 module.exports = router;

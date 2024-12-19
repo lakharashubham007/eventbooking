@@ -1,6 +1,6 @@
 const ApiError = require("../utils/ApiError");
 const httpStatus = require("http-status");
-const Event = require("../models");
+const {Event} = require("../models");
 
 // Service functions for Event Management
 
@@ -22,23 +22,51 @@ const getEventById = async (id) => {
 };
 
 const addBasicInfo = async (basicInfoData) => {
-  const existingEvent = await Event.findOne({ name: basicInfoData.name });
-  if (existingEvent) {
-    return { created: false, addbasicInfo: existingEvent };
+  try {
+    // Check if an event with the same title exists
+    const existingEvent = await Event.findOne({ event_title: basicInfoData.event_title });
+    if (existingEvent) {
+      return { success: false, addbasicInfo: existingEvent };
+    }
+
+    // Create a new event
+    const event = await Event.create(basicInfoData);
+    return { created: true, addbasicInfo: event };
+  } catch (error) {
+    console.error("Error in addBasicInfo:", error);
+    throw error;
   }
-  const event = await Event.create(basicInfoData);
-  return { created: true, addbasicInfo: event };
 };
 
+
 const addPeckageInfo = async (eventId, packageData) => {
-  const event = await Event.findById(eventId);
-  if (!event) {
-    throw new ApiError(httpStatus.NOT_FOUND, "Event not found");
+  try {
+    console.log(packageData, "---------------peckages---------------");
+
+    // Find the event by ID
+    let event = await Event.findById(eventId);
+    if (!event) {
+      throw new ApiError(httpStatus.NOT_FOUND, "Event not found");
+    }
+
+    // Update the event's package-related fields
+    event.peckage_type = packageData.peckage_type || event.peckage_type;
+    event.peckage_amount = packageData.peckage_amount || event.peckage_amount;
+    event.peckage_start_date = packageData.peckage_start_date || event.peckage_start_date;
+    event.peckage_description = packageData.peckage_description || event.peckage_description;
+    event.currency = packageData.currency || event.currency;
+
+    // Save the updated event
+    await event.save();
+
+    console.log(event, "---------------event---------------");
+    return { created: true,  event };
+  } catch (error) {
+    console.error("Error adding package info:", error);
+    throw error;
   }
-  event.packageInfo = packageData;
-  await event.save();
-  return { hotel: event, statusCode: httpStatus.OK };
 };
+
 
 const addMedia = async ({ eventId, thumbnail, gallery }) => {
   const event = await Event.findById(eventId);

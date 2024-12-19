@@ -10,6 +10,13 @@ module.exports.updateAdminStaff = require("./adminStaff.controller").updateAdmin
 module.exports.getAllAdminStaff = require("./adminStaff.controller").getAllAdminStaff;
 module.exports.permissionController = require('./permission.controller.js');
 
+//Agency
+module.exports.createAgencyStaff = require("./agencyStaff.controller").createAgencyStaff;
+module.exports.deleteAgencyStaff = require("./agencyStaff.controller").deleteAgencyStaff;
+module.exports.getAgencyStaffById = require("./agencyStaff.controller").getAgencyStaffById;
+module.exports.updatAgencyStaff = require("./agencyStaff.controller").updateAgencyStaff;
+module.exports.getAllAgencyStaff = require("./agencyStaff.controller").getAllAgencyStaff;
+
 //Events
 module.exports.eventController = require('./events.controller');
 module.exports.eventTypeController = require('./eventType.controller');
